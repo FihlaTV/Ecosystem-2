@@ -54,6 +54,11 @@ public class CameraMovement : MonoBehaviour
         {
             Camera.main.orthographicSize += scrollSpeed * Time.deltaTime;
         }
+
+        if(Camera.main.orthographicSize < 0)
+        {
+            Camera.main.orthographicSize = 0;
+        }
     }
     float MoveSpeed()
     {

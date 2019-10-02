@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using SFB;
 
 public class Demarcation : MonoBehaviour
 {
@@ -8,6 +10,8 @@ public class Demarcation : MonoBehaviour
 
     private bool creatingArea;
 
+    private float width;
+    private float height;
     private Vector3 oldPosition;
 
     private struct Point
@@ -25,12 +29,17 @@ public class Demarcation : MonoBehaviour
     private struct Rectangle
     {
         public Point leftDown;
-        public Point RightUp;
+        public Point rightUp;
 
         public Rectangle(Point LD, Point RP)
         {
             leftDown = LD;
-            RightUp = RP;
+            rightUp = RP;
+        }
+
+        public string toString()
+        {
+            return "{" + "minX:" + leftDown.x + " , minY:" + leftDown.y + " , maxX:" +  rightUp.x + " , maxY:" + rightUp.y + "}";
         }
 
     }
@@ -40,6 +49,13 @@ public class Demarcation : MonoBehaviour
     private GameObject newRectangle;
     private Vector3 initialPosition;
 
+    private void OnEnable()
+    {
+        width = CameraMovement.getXBoundaries().y;
+        height = CameraMovement.getYBoundaries().y;
+    }
+
+
     private void Start()
     {
         listRectangles = new List<Rectangle>();
@@ -47,14 +63,24 @@ public class Demarcation : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetButtonDown("Space"))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            
 
-            foreach (Rectangle rec in listRectangles)
+            var path = StandaloneFileBrowser.OpenFilePanel("Open File", "", "", false);
+
+            var iter = 1;
+
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(path[0]))
             {
-
+             
+                foreach (Rectangle rec in listRectangles)
+                {
+                    file.WriteLine(rec.toString());
+                    iter++;
+                }
             }
+            
         }
 
         if(creatingArea)
@@ -72,7 +98,7 @@ public class Demarcation : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
-                listRectangles.Add(new Rectangle(new Point(initialPosition.x, initialPosition.y), new Point(goal.x, goal.y)));
+                listRectangles.Add(new Rectangle(new Point(initialPosition.x + width, initialPosition.y + height), new Point(goal.x + width, goal.y + height)));
                 creatingArea = false;
             }
         }

@@ -9,6 +9,7 @@ public class ImageController : MonoBehaviour
 {
 
     public GameObject imagePlaceholder;
+    public GameObject canvas;
 
     void Start()
     {
@@ -38,7 +39,20 @@ public class ImageController : MonoBehaviour
             tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
 
-        imagePlaceholder.GetComponent<RectTransform>().sizeDelta = new Vector2 (tex.width, tex.height);
+        var size = new Vector2(tex.width, tex.height);
+
+        imagePlaceholder.GetComponent<RectTransform>().sizeDelta = size;
+        canvas.GetComponent<RectTransform>().sizeDelta = size;
+
+        var xBorders = new Vector2(-tex.width/2, tex.width / 2);
+        var yBorders = new Vector2(-tex.height / 2, tex.height / 2);
+
+
+
+        CameraMovement.setXBoundaries(xBorders);
+        CameraMovement.setYBoundaries(yBorders);
+
+
         imagePlaceholder.GetComponent<RawImage>().texture = tex;
 
     }

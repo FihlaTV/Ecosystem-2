@@ -9,8 +9,8 @@ public class CameraMovement : MonoBehaviour
     public float speed;
     public float scrollSpeed;
     //x - min y - max
-    public Vector2 minMaxXPosition;
-    public Vector2 minMaxYPosition;
+    public static Vector2 minMaxXPosition;
+    public static Vector2 minMaxYPosition;
     private float screenWidth;
     private float screenHeight;
     private Vector3 cameraMove;
@@ -63,5 +63,25 @@ public class CameraMovement : MonoBehaviour
     float MoveSpeed()
     {
         return speed * Time.deltaTime;
+    }
+
+    public static void setXBoundaries(Vector2 newBoundaries)
+    {
+        minMaxXPosition = newBoundaries;
+    }
+
+    public static void setYBoundaries(Vector2 newBoundaries)
+    {
+        minMaxYPosition = newBoundaries;
+    }
+
+    public static Vector2 getXBoundaries()
+    {
+        return minMaxXPosition;
+    }
+
+    public static Vector2 getYBoundaries()
+    {
+        return minMaxYPosition;
     }
 }

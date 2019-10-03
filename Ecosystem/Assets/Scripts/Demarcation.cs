@@ -8,6 +8,7 @@ public class Demarcation : MonoBehaviour
 {
     public GameObject RectanglePrefab;
 
+    public float pixelsPerMeter;
     private bool creatingArea;
 
     private float width;
@@ -73,6 +74,7 @@ public class Demarcation : MonoBehaviour
             using (System.IO.StreamWriter file =
             new System.IO.StreamWriter(path[0]))
             {
+                file.WriteLine("Domain: { \"minX\":0.0,\"minY\": 0.0, \"maxX\":" + width * 2 + ", \"maxY\":" + height * 2 + "}");
              
                 foreach (Rectangle rec in listRectangles)
                 {
@@ -98,7 +100,21 @@ public class Demarcation : MonoBehaviour
 
             if (Input.GetMouseButtonUp(0))
             {
-                listRectangles.Add(new Rectangle(new Point(initialPosition.x + width, initialPosition.y + height), new Point(goal.x + width, goal.y + height)));
+                if(initialPosition.x > goal.x)
+                {
+                    var aux = initialPosition.x;
+                    initialPosition.x = goal.x;
+                    goal.x = aux;
+                }
+
+                if (initialPosition.y > goal.y)
+                {
+                    var aux = initialPosition.y;
+                    initialPosition.y = goal.y;
+                    goal.y = aux;
+                }
+
+                listRectangles.Add(new Rectangle(new Point((initialPosition.x + width)/ pixelsPerMeter, (initialPosition.y + height)/ pixelsPerMeter), new Point((goal.x + width)/ pixelsPerMeter, (goal.y + height)/ pixelsPerMeter)));
                 creatingArea = false;
             }
         }

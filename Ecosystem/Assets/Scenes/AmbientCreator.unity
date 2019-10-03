@@ -715,6 +715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RectanglePrefab: {fileID: 6118911331084656614, guid: 84598b0e7f633de478b7e6ec26546690,
     type: 3}
+  pixelsPerMeter: 1
 --- !u!4 &1301128962
 Transform:
   m_ObjectHideFlags: 0

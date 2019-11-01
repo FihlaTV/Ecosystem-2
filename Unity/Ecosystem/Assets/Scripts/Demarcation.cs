@@ -98,6 +98,11 @@ public class Demarcation : MonoBehaviour
 
             oldPosition = goal;
 
+            if(Input.GetMouseButtonDown(1))
+            {
+
+            }
+
             if (Input.GetMouseButtonUp(0))
             {
                 if(initialPosition.x > goal.x)
